@@ -78,7 +78,9 @@ CREATE INDEX idx_track_name_ci ON track(LOWER(name));
 ```
 
 **Status**: 
-- **Complete** 
+- **Complete**:
+- Non‑jazz customers have a slightly higher average spend — 40.06 vs 38.96
+- Index creation failed: (psycopg2.errors.InsufficientPrivilege) must be owner of table track
 
 ---
 
