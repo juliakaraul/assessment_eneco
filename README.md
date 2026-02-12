@@ -86,13 +86,22 @@ CREATE INDEX idx_track_name_ci ON track(LOWER(name));
 
 ## Assignment 5: HTTP API Integration – JWT Troubleshooting
 
-**Question**: Bob's API calls return 401 "Unauthorized" — what's the issue?
+**Question**:
+1. What could this snippet represent and how is it typically used?
+2. Describe the steps you would take to further analyze Bob's issue
 
-**Token Analysis**: **Token was expired.** Expired on March 22nd, 2021. While the email was from March 23rd.
-The JWT token in Bob's request was decoded:
-- **Expired**: March 22, 2021 14:43:25 UTC
+**Solution** → `docs/5_http_analysis.md` (detailed analysis) + `src/5_http_analysis.py` (code)
 
-**Solution** → `src/5_http_analysis.py`
+**Answer 1 - What is the snippet:**
+This is a JWT (JSON Web Token) used for API authentication via Azure AD. It's sent in the `Authorization: Bearer <token>` header for API requests.
+
+**Answer 2 - Root Cause:**
+Token expired on March 22, 2021 14:43 UTC, but Bob's email is from March 23, 2021 10:21 CET (~19 hours later). Bob is reusing yesterday's demo token.
+
+**Solution for Bob:**
+Request a new token from Azure AD before making API calls. Tokens typically expire after 1 hour.
+
+**Full analysis:** See `docs/5_http_analysis.md`
 
 ---
 
