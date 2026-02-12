@@ -15,26 +15,18 @@ def decode_base64url(data):
 header_b64, payload_b64, signature_b64 = token.split('.')
 
 # decode the header and payload
-header_json = decode_base64url(header_b64).decode('utf-8')
-payload_json = decode_base64url(payload_b64).decode('utf-8')
+header = json.loads(decode_base64url(header_b64).decode('utf-8'))
+payload = json.loads(decode_base64url(payload_b64).decode('utf-8'))
 
 print("HEADER:")
-print(json.dumps(json.loads(header_json), indent=2))
+print(json.dumps(header, indent=2))
 
 print("\nPAYLOAD:")
-print(json.dumps(json.loads(payload_json), indent=2))
+print(json.dumps(payload, indent=2))
 
+exp_time = datetime.datetime.fromtimestamp(payload['exp'])
 
-exp = json.loads(payload_json).get("exp")
-
-if exp:
-    exp_time = datetime.datetime.fromtimestamp(exp)
+if exp_time:
     now = datetime.datetime.now()
 
     print("Expires at (UTC):", exp_time)
-    print("Current time (UTC):", now)
-
-    if now > exp_time:
-        print("Result: Token is EXPIRED -> probably the reason for the 401 error")
-    else:
-        print("Result: Token is still valid")
