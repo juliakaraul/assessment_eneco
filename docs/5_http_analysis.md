@@ -102,48 +102,6 @@ curl -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGci..." \
 
 ---
 
-## Response to Bob
-
-**Subject:** RE: Your API is broken!
-
-Hi Bob,
-
-Good news - the API isn't broken! I found the issue in the logs.
-
-**The problem:** Your access token expired yesterday at 14:43 UTC. JWT tokens have a short lifespan (1 hour) for security reasons.
-
-**The solution:** You need to request a new token before making API calls. Here's how:
-```python
-import msal
-
-# Configure the Azure AD client
-app = msal.ConfidentialClientApplication(
-    client_id="1e0fb354-a78d-4f5b-9966-ed623a624599",
-    client_credential="",
-    authority="https://login.microsoftonline.com/eca36054-49a9-4731-a42f-8400670fc022"
-)
-
-# Get a fresh token
-result = app.acquire_token_for_client(
-    scopes=["https://Eneco.onmicrosoft.com/ecsaz-apigee-odp-t/.default"]
-)
-
-if "access_token" in result:
-    token = result["access_token"]
-    # Use this token in your API calls
-else:
-    print("Error:", result.get("error_description"))
-```
-
-**Best practice:** Implement token refresh logic - when you get a 401, automatically request a new token and retry.
-
-Let me know if you need help setting this up!
-
-Best,  
-Julia
-
----
-
 ## Implementation
 
 **Script:** `src/5_http_analysis.py`
@@ -176,8 +134,6 @@ PAYLOAD:
 }
 
 Expires at (UTC): 2021-03-22 14:43:25
-Current time (UTC): 2026-02-12 11:11:30
-Result: Token is EXPIRED -> probably the reason for the 401 error
 ```
 
 **Conclusion:** Bob's token expired ~19 hours before his API call. He needs to request a fresh token from Azure AD.

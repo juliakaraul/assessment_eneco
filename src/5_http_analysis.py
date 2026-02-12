@@ -30,9 +30,3 @@ if exp_time:
     now = datetime.datetime.now()
 
     print("Expires at (UTC):", exp_time)
-    print("Current time (UTC):", now)
-
-    if now > exp_time:
-        print("Result: Token is EXPIRED -> probably the reason for the 401 error")
-    else:
-        print("Result: Token is still valid")
