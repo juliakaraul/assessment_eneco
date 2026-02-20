@@ -13,7 +13,7 @@ class AirportInsights:
         self.countries = pd.read_csv(os.path.join(self.data_dir, "countries.csv"))
         self.runways = pd.read_csv(os.path.join(self.data_dir, "runways.csv"))
 
-        # Compute insights
+    def run(self):
         self._airports_by_country()
         self._longest_runways()
 
@@ -63,7 +63,9 @@ class AirportInsights:
     
 if __name__ == "__main__":
     insights = AirportInsights()
+    insights.run()
     insights.save_results()
+
   
     print("Top 3 countries by airport count:")
     print(insights.get_top_countries(3))
