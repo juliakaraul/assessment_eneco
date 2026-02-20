@@ -16,9 +16,14 @@ class AzureUploader:
     def upload(self, local_file: Path, blob_folder: str):
         if not local_file.exists():
             raise FileNotFoundError(f"{local_file} does not exist!")
+        
         blob_path = f"{blob_folder}/{local_file.name}"
+
         with open(local_file, "rb") as f:
-            self.container_client.upload_blob(name=blob_path, data=f, overwrite=True)
+            self.container_client.upload_blob(
+                name=blob_path,
+                data=f,
+                overwrite=True)
         print(f"Uploaded {local_file} → {blob_path}")
 
 
